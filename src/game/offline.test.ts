@@ -9,6 +9,7 @@ function miners(n: number): GameState {
   const s = initialState();
   s.workers.miner = n;
   s.resources.ale = 1e9; // effectively infinite for rate tests
+  s.buildings.brewery = 1000; // huge ale storage so morale stays happy for the whole window
   return s;
 }
 

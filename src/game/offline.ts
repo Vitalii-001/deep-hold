@@ -18,14 +18,14 @@ export function simulateOffline(
   const rate = BALANCE.offline.rate * statMult(s, 'offline', now);
   const noCaveIn = () => 1;
 
-  let cur: GameState = { ...s, digMode: 'careful', buildings: { ...s.buildings, brewery: 1000000 } };
+  let cur: GameState = { ...s, digMode: 'careful' };
   let t = 0;
   while (t < capped) {
     const step = Math.min(BALANCE.offline.chunkSec, capped - t);
     cur = simulateTick(cur, step * rate, now, noCaveIn);
     t += step;
   }
-  cur = { ...cur, digMode: s.digMode, buildings: s.buildings };
+  cur = { ...cur, digMode: s.digMode };
 
   const gained = {} as Record<ResourceId, number>;
   for (const k of Object.keys(s.resources) as ResourceId[]) {
