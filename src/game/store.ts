@@ -4,6 +4,7 @@ import { BALANCE } from '../config/balance';
 import { BUILDINGS } from '../config/buildings';
 import { UPGRADES } from '../config/upgrades';
 import { buildingCost, canAfford, payCost, statMult, workerCap, workerCost } from './economy';
+import { simulateTick } from './tick';
 
 export function initialState(): GameState {
   return {
@@ -28,6 +29,7 @@ export interface GameStore extends GameState {
   setDigMode: (m: DigMode) => void;
   toggleMuted: () => void;
   hydrate: (s: GameState) => void;
+  tick: (dt: number, now?: number, rng?: () => number) => void;
 }
 
 export const useGame = create<GameStore>()((set) => ({
@@ -75,4 +77,5 @@ export const useGame = create<GameStore>()((set) => ({
   setDigMode: (m) => set({ digMode: m }),
   toggleMuted: () => set((s) => ({ muted: !s.muted })),
   hydrate: (ns) => set(() => ns),
+  tick: (dt, now = Date.now(), rng = Math.random) => set((s) => simulateTick(s, dt, now, rng)),
 }));
