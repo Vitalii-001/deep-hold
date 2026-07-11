@@ -39,6 +39,13 @@ test('worker cost scales with owned count', () => {
   expect(workerCost(s, 'miner').stone).toBe(Math.ceil(15 * 1.15 * 1.15));
 });
 
+test('building cost scales with level', () => {
+  const s = baseState();
+  expect(buildingCost(s, 'mineShaft').stone).toBe(50);
+  s.buildings.mineShaft = 2;
+  expect(buildingCost(s, 'mineShaft').stone).toBe(Math.ceil(50 * Math.pow(1.6, 2)));
+});
+
 test('worker caps come from buildings', () => {
   const s = baseState();
   expect(workerCap(s, 'miner')).toBe(5);
