@@ -1,25 +1,30 @@
-import { useState } from 'react';
+import { useUi, type PanelTab } from './uiStore';
 import { WorkersPanel } from './WorkersPanel';
 import { BuildingsPanel } from './BuildingsPanel';
 import { UpgradesPanel } from './UpgradesPanel';
 
-const TABS = ['workers', 'buildings', 'upgrades'] as const;
-type Tab = (typeof TABS)[number];
+const TABS: PanelTab[] = ['workers', 'buildings', 'upgrades'];
 
 export function SidePanels() {
-  const [tab, setTab] = useState<Tab>('workers');
+  const activeTab = useUi((u) => u.activeTab);
+  const setActiveTab = useUi((u) => u.setActiveTab);
   return (
     <div className="side-panels">
       <div className="tabs">
         {TABS.map((t) => (
-          <button key={t} className={tab === t ? 'active' : ''} onClick={() => setTab(t)}>
+          <button
+            key={t}
+            data-hint={`tab-${t}`}
+            className={activeTab === t ? 'active' : ''}
+            onClick={() => setActiveTab(t)}
+          >
             {t[0].toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
-      {tab === 'workers' && <WorkersPanel />}
-      {tab === 'buildings' && <BuildingsPanel />}
-      {tab === 'upgrades' && <UpgradesPanel />}
+      {activeTab === 'workers' && <WorkersPanel />}
+      {activeTab === 'buildings' && <BuildingsPanel />}
+      {activeTab === 'upgrades' && <UpgradesPanel />}
     </div>
   );
 }
