@@ -5,7 +5,6 @@ import { evaluateTutorial } from '../game/tutorial';
 
 export function TutorialHint() {
   const s = useGame();
-  const completeTutorialStep = useGame((g) => g.completeTutorialStep);
   const activeTab = useUi((u) => u.activeTab);
   const shownIdRef = useRef<string | null>(null);
   const [, forceRerender] = useReducer((n: number) => n + 1, 0);
@@ -21,7 +20,7 @@ export function TutorialHint() {
   // Commit completions outside render. completeTutorialStep is idempotent.
   const completeKey = toComplete.join(',');
   useEffect(() => {
-    toComplete.forEach((id) => completeTutorialStep(id));
+    toComplete.forEach((id) => s.completeTutorialStep(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [completeKey]);
 
