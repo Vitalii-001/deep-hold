@@ -4,6 +4,7 @@ import { ClickButton } from './ui/ClickButton';
 import { DepthPanel } from './ui/DepthPanel';
 import { SidePanels } from './ui/SidePanels';
 import { AleStatus } from './ui/AleStatus';
+import { MineView } from './ui/MineView';
 
 export default function App() {
   useGameLoop();
@@ -15,7 +16,7 @@ export default function App() {
       </header>
       <main className="main">
         <section className="mine-col">
-          <div className="mine-view-placeholder" />
+          <MineView />
           <ClickButton />
           <DepthPanel />
         </section>
