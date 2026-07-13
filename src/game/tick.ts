@@ -14,11 +14,11 @@ export function simulateTick(
   const res = { ...s.resources };
   const totalWorkers = s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
 
-  // --- ale cycle: drink first, morale from whether there was ale to drink
-  const hadAle = res.ale > 0;
+  // --- ale cycle: morale requires ale on hand to cover this tick's thirst, then drink
   const thirst = (totalWorkers * BALANCE.ale.consumptionPerWorker * dt) / statMult(s, 'aleThrift', now);
+  const merry = res.ale >= thirst; // covers zero-worker case: 0 >= 0
   res.ale = Math.max(0, res.ale - thirst);
-  const morale = hadAle ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
+  const morale = merry ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
   const stun = s.caveInUntil > now ? BALANCE.dig.caveIn.stunMult : 1;
   const workMult = morale * stun;
 

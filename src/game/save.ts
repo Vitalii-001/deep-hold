@@ -2,6 +2,7 @@ import type { GameState } from './types';
 import { initialState } from './store';
 
 export const SAVE_KEY = 'deep-hold-save';
+// Bumping this invalidates all existing saves. Add a migration path in loadGame before ever incrementing.
 export const SAVE_VERSION = 1;
 
 const STATE_KEYS = Object.keys(initialState()) as (keyof GameState)[];

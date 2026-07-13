@@ -35,7 +35,7 @@ export function useGameLoop(): void {
       } else {
         last = performance.now(); // don't count hidden time as a live dt
         const gapSec = hiddenAt ? (Date.now() - hiddenAt) / 1000 : 0;
-        if (gapSec > 60) {
+        if (gapSec >= BALANCE.offline.minModalSec) {
           const { state } = simulateOffline(useGame.getState(), gapSec, Date.now());
           useGame.getState().hydrate(state);
         }

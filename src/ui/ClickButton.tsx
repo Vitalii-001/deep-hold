@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type PointerEvent } from 'react';
 import { useGame } from '../game/store';
 import { BALANCE } from '../config/balance';
 import { statMult } from '../game/economy';
@@ -17,7 +17,8 @@ export function ClickButton() {
   const [floats, setFloats] = useState<FloatNum[]>([]);
   const nextId = useRef(0);
 
-  const onPress = () => {
+  const onPress = (e: PointerEvent<HTMLButtonElement>) => {
+    if (e.button !== 0) return;
     sfx.pick();
     clickMine();
     const id = nextId.current++;

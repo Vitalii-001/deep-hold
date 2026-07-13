@@ -80,3 +80,11 @@ test('cave-in stun multiplies production by stunMult', () => {
   // 2 * 0.5 * 1.5 * 0.25 * 10 = 3.75
   expect(next.resources.stone).toBeCloseTo(3.75);
 });
+
+test('strike persists when brewing cannot cover consumption', () => {
+  const s = state({ workers: { miner: 10, smith: 0, brewer: 1, scout: 0 } });
+  s.resources.ale = 0.5; // a trickle, far below this tick's thirst
+  const next = simulateTick(s, 10, NOW, never);
+  // thirst = 11 workers * 0.02 * 10s = 2.2 > 0.5 -> strike; mined = 10 * 0.5 * 0.4 * 10 = 20
+  expect(next.resources.stone).toBeCloseTo(20);
+});

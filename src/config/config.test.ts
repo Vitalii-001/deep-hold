@@ -52,5 +52,6 @@ test('workers and buildings have valid costs and growth', () => {
   for (const b of Object.values(BUILDINGS)) {
     expect(b.costGrowth).toBeGreaterThan(1);
     expect(b.maxLevel).toBeGreaterThan(0);
+    for (const key of Object.keys(b.baseCost)) expect(RESOURCE_IDS).toContain(key);
   }
 });

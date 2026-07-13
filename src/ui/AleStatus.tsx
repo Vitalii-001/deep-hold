@@ -11,10 +11,10 @@ export function AleStatus() {
   const storage = aleStorage(s);
   const totalWorkers = s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
   const drink = (totalWorkers * BALANCE.ale.consumptionPerWorker) / statMult(s, 'aleThrift', now);
-  const morale = s.resources.ale > 0 ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
+  const morale = s.resources.ale >= drink * 0.1 ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
   const stun = s.caveInUntil > now ? BALANCE.dig.caveIn.stunMult : 1;
   const brew = s.workers.brewer * WORKERS.brewer.baseRate * statMult(s, 'brew', now) * morale * stun;
-  const striking = s.resources.ale <= 0 && totalWorkers > 0;
+  const striking = s.resources.ale < drink * 0.1 && totalWorkers > 0;
   return (
     <div className={`panel ale-status ${striking ? 'strike' : ''}`}>
       <div className="bar">

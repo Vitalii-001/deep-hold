@@ -18,11 +18,12 @@ export function simulateOffline(
   const rate = BALANCE.offline.rate * statMult(s, 'offline', now);
   const noCaveIn = () => 1;
 
+  const startMs = now - capped * 1000;
   let cur: GameState = { ...s, digMode: 'careful' };
   let t = 0;
   while (t < capped) {
     const step = Math.min(BALANCE.offline.chunkSec, capped - t);
-    cur = simulateTick(cur, step * rate, now, noCaveIn);
+    cur = simulateTick(cur, step * rate, startMs + (t + step) * 1000, noCaveIn);
     t += step;
   }
   cur = { ...cur, digMode: s.digMode };
