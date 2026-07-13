@@ -17,7 +17,7 @@ export function WorkersPanel() {
         const cost = workerCost(s, w.id);
         const locked = cap === 0;
         return (
-          <div key={w.id} className="row">
+          <div key={w.id} data-hint={`worker-${w.id}`} className="row">
             <Icon id={w.id} />
             <div className="row-main">
               <strong>{w.name}</strong> <span className="desc">{count}/{cap}</span>

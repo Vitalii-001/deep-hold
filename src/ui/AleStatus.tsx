@@ -1,7 +1,7 @@
 import { useGame } from '../game/store';
 import { WORKERS } from '../config/workers';
 import { BALANCE } from '../config/balance';
-import { aleStorage, statMult } from '../game/economy';
+import { aleStorage, isStriking, statMult } from '../game/economy';
 import { formatNumber } from '../game/format';
 import { Icon } from './Icon';
 
@@ -14,9 +14,9 @@ export function AleStatus() {
   const morale = s.resources.ale >= drink * 0.1 ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
   const stun = s.caveInUntil > now ? BALANCE.dig.caveIn.stunMult : 1;
   const brew = s.workers.brewer * WORKERS.brewer.baseRate * statMult(s, 'brew', now) * morale * stun;
-  const striking = s.resources.ale < drink * 0.1 && totalWorkers > 0;
+  const striking = isStriking(s);
   return (
-    <div className={`panel ale-status ${striking ? 'strike' : ''}`}>
+    <div className={`panel ale-status ${striking ? 'strike' : ''}`} data-hint="ale-status">
       <div className="bar">
         <div className="bar-fill" style={{ width: `${Math.min(100, (s.resources.ale / storage) * 100)}%` }} />
       </div>

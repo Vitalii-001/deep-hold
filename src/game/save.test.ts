@@ -61,3 +61,14 @@ test('clearSave removes the entry', () => {
   clearSave();
   expect(loadGame()).toBeNull();
 });
+
+test('tutorialDone roundtrips and defaults to [] for old saves', () => {
+  const s = initialState();
+  s.tutorialDone = ['clickMine', 'hireMiner'];
+  saveGame(s, 1);
+  expect(loadGame()!.state.tutorialDone).toEqual(['clickMine', 'hireMiner']);
+
+  mem.clear();
+  mem.set(SAVE_KEY, JSON.stringify({ version: 1, savedAt: 1, state: { depth: 300 } }));
+  expect(loadGame()!.state.tutorialDone).toEqual([]);
+});

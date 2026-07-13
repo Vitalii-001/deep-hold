@@ -69,3 +69,13 @@ export function digSpeed(s: GameState, now: number): number {
   if (s.digMode === 'reckless') v *= BALANCE.dig.recklessMult;
   return v;
 }
+
+// True when at least one dwarf is working and there isn't enough ale to cover
+// one ~0.1s tick of thirst. Pure: 'aleThrift' is not a production stat, so the
+// `now` passed to statMult never changes the result.
+export function isStriking(s: GameState): boolean {
+  const totalWorkers = s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
+  if (totalWorkers === 0) return false;
+  const drink = (totalWorkers * BALANCE.ale.consumptionPerWorker) / statMult(s, 'aleThrift', 0);
+  return s.resources.ale < drink * 0.1;
+}
