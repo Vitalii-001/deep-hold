@@ -3,7 +3,7 @@ import type { BuildingId, DigMode, GameState, WorkerId } from './types';
 import { BALANCE } from '../config/balance';
 import { BUILDINGS } from '../config/buildings';
 import { UPGRADES } from '../config/upgrades';
-import { buildingCost, canAfford, payCost, statMult, workerCap, workerCost } from './economy';
+import { aleStorage, buildingCost, canAfford, payCost, statMult, workerCap, workerCost } from './economy';
 import { simulateTick } from './tick';
 
 export function initialState(): GameState {
@@ -30,6 +30,8 @@ export interface GameStore extends GameState {
   toggleMuted: () => void;
   hydrate: (s: GameState) => void;
   tick: (dt: number, now?: number, rng?: () => number) => void;
+  claimBlessing: (now?: number) => void;
+  claimAleBarrel: () => void;
 }
 
 export const useGame = create<GameStore>()((set) => ({
@@ -78,4 +80,15 @@ export const useGame = create<GameStore>()((set) => ({
   toggleMuted: () => set((s) => ({ muted: !s.muted })),
   hydrate: (ns) => set(() => ns),
   tick: (dt, now = Date.now(), rng = Math.random) => set((s) => simulateTick(s, dt, now, rng)),
+
+  claimBlessing: (now = Date.now()) =>
+    set(() => ({ blessingUntil: now + BALANCE.blessing.durationHours * 3600 * 1000 })),
+
+  claimAleBarrel: () =>
+    set((s) => ({
+      resources: {
+        ...s.resources,
+        ale: Math.min(aleStorage(s), s.resources.ale + BALANCE.ale.adBarrelAmount),
+      },
+    })),
 }));
