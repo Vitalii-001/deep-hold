@@ -16,7 +16,7 @@ export function AleStatus() {
   const brew = s.workers.brewer * WORKERS.brewer.baseRate * statMult(s, 'brew', now) * morale * stun;
   const striking = isStriking(s);
   return (
-    <div className={`panel ale-status ${striking ? 'strike' : ''}`}>
+    <div className={`panel ale-status ${striking ? 'strike' : ''}`} data-hint="ale-status">
       <div className="bar">
         <div className="bar-fill" style={{ width: `${Math.min(100, (s.resources.ale / storage) * 100)}%` }} />
       </div>

@@ -25,7 +25,7 @@ export function BuildingsPanel() {
         const cost = buildingCost(s, b.id);
         const maxed = level >= b.maxLevel;
         return (
-          <div key={b.id} className="row">
+          <div key={b.id} data-hint={`building-${b.id}`} className="row">
             <Icon id={b.id} />
             <div className="row-main">
               <strong>{b.name}</strong> <span className="desc">Lv {level}/{b.maxLevel}</span>

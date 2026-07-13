@@ -9,6 +9,7 @@ import { AdBoosts } from './ui/AdBoosts';
 import { Toasts } from './ui/Toasts';
 import { OfflineModal } from './ui/OfflineModal';
 import { Watchers } from './ui/Watchers';
+import { TutorialHint } from './ui/TutorialHint';
 import { MuteButton } from './ui/MuteButton';
 import { CreditsModal } from './ui/CreditsModal';
 
@@ -35,6 +36,7 @@ export default function App() {
         </aside>
       </main>
       <Watchers />
+      <TutorialHint />
       <Toasts />
       <OfflineModal />
     </div>

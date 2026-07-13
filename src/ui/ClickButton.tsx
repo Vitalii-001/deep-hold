@@ -30,7 +30,7 @@ export function ClickButton() {
 
   return (
     <div className="click-area">
-      <button className="mine-btn" onPointerDown={onPress}>
+      <button className="mine-btn" data-hint="mine-btn" onPointerDown={onPress}>
         ⛏️ MINE
       </button>
       {floats.map((f) => (

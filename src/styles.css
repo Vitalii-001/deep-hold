@@ -110,3 +110,19 @@ button.active { border-color: var(--accent); background: #33290f; }
 .reset-btn { border-color: var(--danger); color: var(--danger); }
 
 .side-panels { display: flex; flex-direction: column; gap: 8px; }
+
+.tutorial-hint {
+  position: fixed; z-index: 40; pointer-events: none;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center;
+}
+.tutorial-hint.above { transform: translate(-50%, -100%); flex-direction: column-reverse; }
+.tutorial-bubble {
+  background: var(--panel-2); border: 1px solid var(--accent); color: var(--text);
+  border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; font-weight: 600;
+  max-width: 220px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+.tutorial-arrow { width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; animation: hintBounce 0.9s ease-in-out infinite; }
+.tutorial-hint.below .tutorial-arrow { border-bottom: 10px solid var(--accent); }
+.tutorial-hint.above .tutorial-arrow { border-top: 10px solid var(--accent); }
+@keyframes hintBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
