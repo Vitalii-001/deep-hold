@@ -17,6 +17,7 @@ function baseState(over: Partial<GameState> = {}): GameState {
     caveInUntil: 0,
     blessingUntil: 0,
     muted: false,
+    tutorialDone: [],
     ...over,
   };
 }

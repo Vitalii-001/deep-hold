@@ -64,3 +64,15 @@ test('setDigMode and toggleMuted', () => {
   useGame.getState().toggleMuted();
   expect(useGame.getState().muted).toBe(true);
 });
+
+test('initialState starts with no completed tutorial steps', () => {
+  expect(initialState().tutorialDone).toEqual([]);
+});
+
+test('completeTutorialStep records an id exactly once (idempotent)', () => {
+  useGame.getState().hydrate(initialState());
+  useGame.getState().completeTutorialStep('clickMine');
+  useGame.getState().completeTutorialStep('clickMine');
+  useGame.getState().completeTutorialStep('hireMiner');
+  expect(useGame.getState().tutorialDone).toEqual(['clickMine', 'hireMiner']);
+});

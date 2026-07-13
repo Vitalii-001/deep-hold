@@ -17,4 +17,5 @@ export interface GameState {
   caveInUntil: number; // epoch ms; production stunned while > now
   blessingUntil: number; // epoch ms; x2 production while > now
   muted: boolean;
+  tutorialDone: string[]; // completed tutorial step ids
 }

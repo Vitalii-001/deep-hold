@@ -18,6 +18,7 @@ export function initialState(): GameState {
     caveInUntil: 0,
     blessingUntil: 0,
     muted: false,
+    tutorialDone: [],
   };
 }
 
@@ -32,6 +33,7 @@ export interface GameStore extends GameState {
   tick: (dt: number, now?: number, rng?: () => number) => void;
   claimBlessing: (now?: number) => void;
   claimAleBarrel: () => void;
+  completeTutorialStep: (id: string) => void;
 }
 
 export const useGame = create<GameStore>()((set) => ({
@@ -91,4 +93,7 @@ export const useGame = create<GameStore>()((set) => ({
         ale: Math.min(aleStorage(s), s.resources.ale + BALANCE.ale.adBarrelAmount),
       },
     })),
+
+  completeTutorialStep: (id) =>
+    set((s) => (s.tutorialDone.includes(id) ? s : { tutorialDone: [...s.tutorialDone, id] })),
 }));
