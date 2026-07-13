@@ -3,6 +3,7 @@ import { useGame } from '../game/store';
 import { BALANCE } from '../config/balance';
 import { statMult } from '../game/economy';
 import { formatNumber } from '../game/format';
+import { sfx } from './sfx';
 
 interface FloatNum {
   id: number;
@@ -17,6 +18,7 @@ export function ClickButton() {
   const nextId = useRef(0);
 
   const onPress = () => {
+    sfx.pick();
     clickMine();
     const id = nextId.current++;
     const x = 15 + Math.random() * 70;

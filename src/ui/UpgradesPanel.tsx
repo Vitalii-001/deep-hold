@@ -3,6 +3,7 @@ import { UPGRADE_LIST } from '../config/upgrades';
 import { BUILDINGS } from '../config/buildings';
 import { canAfford } from '../game/economy';
 import { CostLabel } from './CostLabel';
+import { sfx } from './sfx';
 
 export function UpgradesPanel() {
   const s = useGame();
@@ -22,7 +23,7 @@ export function UpgradesPanel() {
             </div>
             <button
               disabled={!!needsBuilding || !canAfford(s.resources, u.cost)}
-              onClick={() => s.buyUpgrade(u.id)}
+              onClick={() => { s.buyUpgrade(u.id); sfx.coin(); }}
             >
               <CostLabel cost={u.cost} />
             </button>

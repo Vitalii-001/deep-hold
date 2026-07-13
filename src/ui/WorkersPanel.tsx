@@ -5,6 +5,7 @@ import { BALANCE } from '../config/balance';
 import { canAfford, workerCap, workerCost } from '../game/economy';
 import { Icon } from './Icon';
 import { CostLabel } from './CostLabel';
+import { sfx } from './sfx';
 
 export function WorkersPanel() {
   const s = useGame();
@@ -24,7 +25,7 @@ export function WorkersPanel() {
             </div>
             <button
               disabled={locked || count >= cap || !canAfford(s.resources, cost)}
-              onClick={() => s.hireWorker(w.id)}
+              onClick={() => { s.hireWorker(w.id); sfx.coin(); }}
             >
               {locked ? `Needs ${BUILDINGS[BALANCE.caps[w.id].building].name}` : <CostLabel cost={cost} />}
             </button>

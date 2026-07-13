@@ -3,6 +3,7 @@ import { BUILDINGS } from '../config/buildings';
 import { buildingCost, canAfford } from '../game/economy';
 import { Icon } from './Icon';
 import { CostLabel } from './CostLabel';
+import { sfx } from './sfx';
 
 export function BuildingsPanel() {
   const s = useGame();
@@ -30,7 +31,7 @@ export function BuildingsPanel() {
               <strong>{b.name}</strong> <span className="desc">Lv {level}/{b.maxLevel}</span>
               <p className="desc">{b.description}</p>
             </div>
-            <button disabled={maxed || !canAfford(s.resources, cost)} onClick={() => s.buildBuilding(b.id)}>
+            <button disabled={maxed || !canAfford(s.resources, cost)} onClick={() => { s.buildBuilding(b.id); sfx.coin(); }}>
               {maxed ? 'MAX' : <CostLabel cost={cost} />}
             </button>
           </div>

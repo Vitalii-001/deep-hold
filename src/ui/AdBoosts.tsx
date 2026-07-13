@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGame } from '../game/store';
 import { showRewardedAd } from '../sdk/ads';
 import { formatDuration } from '../game/format';
+import { sfx } from './sfx';
 
 export function AdBoosts() {
   const s = useGame();
@@ -18,7 +19,10 @@ export function AdBoosts() {
       const result = await showRewardedAd();
       if (result === 'rewarded') {
         if (kind === 'blessing') s.claimBlessing(Date.now());
-        else s.claimAleBarrel();
+        else {
+          s.claimAleBarrel();
+          sfx.burp();
+        }
       }
     } finally {
       setBusy(false);
