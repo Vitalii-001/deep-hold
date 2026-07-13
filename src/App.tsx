@@ -10,6 +10,7 @@ import { Toasts } from './ui/Toasts';
 import { OfflineModal } from './ui/OfflineModal';
 import { Watchers } from './ui/Watchers';
 import { MuteButton } from './ui/MuteButton';
+import { CreditsModal } from './ui/CreditsModal';
 
 export default function App() {
   useGameLoop();
@@ -18,6 +19,7 @@ export default function App() {
       <header className="header">
         <h1>Deep Hold</h1>
         <ResourceBar />
+        <CreditsModal />
         <MuteButton />
       </header>
       <main className="main">
