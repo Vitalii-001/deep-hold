@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { WorkersPanel } from './WorkersPanel';
 import { BuildingsPanel } from './BuildingsPanel';
+import { UpgradesPanel } from './UpgradesPanel';
 
-const TABS = ['workers', 'buildings'] as const;
+const TABS = ['workers', 'buildings', 'upgrades'] as const;
 type Tab = (typeof TABS)[number];
 
 export function SidePanels() {
@@ -18,6 +19,7 @@ export function SidePanels() {
       </div>
       {tab === 'workers' && <WorkersPanel />}
       {tab === 'buildings' && <BuildingsPanel />}
+      {tab === 'upgrades' && <UpgradesPanel />}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { ResourceBar } from './ui/ResourceBar';
 import { ClickButton } from './ui/ClickButton';
 import { DepthPanel } from './ui/DepthPanel';
 import { SidePanels } from './ui/SidePanels';
+import { AleStatus } from './ui/AleStatus';
 
 export default function App() {
   useGameLoop();
@@ -19,6 +20,7 @@ export default function App() {
           <DepthPanel />
         </section>
         <aside className="side-col">
+          <AleStatus />
           <SidePanels />
         </aside>
       </main>
