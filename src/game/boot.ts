@@ -1,7 +1,15 @@
 import { BALANCE } from '../config/balance';
-import { loadGame } from './save';
+import { clearSave, loadGame } from './save';
 import { simulateOffline, type OfflineSummary } from './offline';
-import { useGame } from './store';
+import { initialState, useGame } from './store';
+
+// Wipes the save AND the in-memory state. Both are required: the loop's
+// autosave/beforeunload handlers re-persist whatever is in memory, so
+// clearing storage alone never sticks.
+export function resetGame(): void {
+  clearSave();
+  useGame.getState().hydrate(initialState());
+}
 
 export function bootGame(now: number = Date.now()): OfflineSummary | null {
   const saved = loadGame();

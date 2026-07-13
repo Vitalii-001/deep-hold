@@ -107,5 +107,6 @@ button.active { border-color: var(--accent); background: #33290f; }
 
 .mute-btn { margin-left: auto; }
 .credits-link { background: none; border: none; color: var(--dim); text-decoration: underline; padding: 4px; }
+.reset-btn { border-color: var(--danger); color: var(--danger); }
 
 .side-panels { display: flex; flex-direction: column; gap: 8px; }

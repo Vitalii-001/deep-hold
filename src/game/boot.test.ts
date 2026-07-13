@@ -1,6 +1,6 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { bootGame } from './boot';
-import { saveGame } from './save';
+import { bootGame, resetGame } from './boot';
+import { loadGame, saveGame } from './save';
 import { initialState, useGame } from './store';
 
 const mem = new Map<string, string>();
@@ -28,6 +28,18 @@ test('recent save (< 60s away): hydrates without offline sim', () => {
   const summary = bootGame(100_000 + 30_000); // 30s later
   expect(summary).toBeNull();
   expect(useGame.getState().resources.stone).toBe(500);
+});
+
+test('resetGame wipes the save and restores a fresh in-memory state', () => {
+  const s = initialState();
+  s.resources.stone = 999;
+  s.depth = 300;
+  saveGame(s, 100_000);
+  useGame.getState().hydrate(s);
+  resetGame();
+  expect(loadGame()).toBeNull();
+  expect(useGame.getState().resources.stone).toBe(0);
+  expect(useGame.getState().depth).toBe(0);
 });
 
 test('long absence: offline sim runs and summary is returned', () => {
