@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import {
-  aleStorage, buildingCost, canAfford, payCost, scaledCost, statMult, workerCap, workerCost, digSpeed,
+  aleStorage, buildingCost, canAfford, isStriking, payCost, scaledCost, statMult, workerCap, workerCost, digSpeed,
 } from './economy';
 import type { GameState } from './types';
 import { BALANCE } from '../config/balance';
@@ -84,4 +84,22 @@ test('digSpeed: workers, mode, upgrades; no morale', () => {
   expect(digSpeed(s, now)).toBeCloseTo(expected);
   s.digMode = 'reckless';
   expect(digSpeed(s, now)).toBeCloseTo(expected * BALANCE.dig.recklessMult);
+});
+
+test('isStriking: no workers never strike', () => {
+  const s = baseState({ workers: { miner: 0, smith: 0, brewer: 0, scout: 0 } });
+  s.resources.ale = 0;
+  expect(isStriking(s)).toBe(false);
+});
+
+test('isStriking: workers with no ale are on strike', () => {
+  const s = baseState({ workers: { miner: 5, smith: 0, brewer: 0, scout: 0 } });
+  s.resources.ale = 0;
+  expect(isStriking(s)).toBe(true);
+});
+
+test('isStriking: plenty of ale means no strike', () => {
+  const s = baseState({ workers: { miner: 5, smith: 0, brewer: 0, scout: 0 } });
+  s.resources.ale = 50;
+  expect(isStriking(s)).toBe(false);
 });
