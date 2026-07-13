@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { formatNumber } from './format';
+import { formatNumber, formatDuration } from './format';
 
 test('integers below 1000 are shown as-is', () => {
   expect(formatNumber(0)).toBe('0');
@@ -23,4 +23,10 @@ test('large units', () => {
   expect(formatNumber(1_500_000)).toBe('1.5M');
   expect(formatNumber(2_500_000_000)).toBe('2.5B');
   expect(formatNumber(999_999)).toBe('999K');
+});
+
+test('formatDuration', () => {
+  expect(formatDuration(42)).toBe('42s');
+  expect(formatDuration(300)).toBe('5m');
+  expect(formatDuration(8010)).toBe('2h 13m');
 });

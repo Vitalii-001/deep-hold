@@ -15,3 +15,11 @@ export function formatNumber(n: number): string {
   if (v >= 100) return Math.floor(v) + UNITS[u];
   return v.toFixed(1).replace(/\.0$/, '') + UNITS[u];
 }
+
+export function formatDuration(sec: number): string {
+  const h = Math.floor(sec / 3600);
+  const m = Math.floor((sec % 3600) / 60);
+  if (h > 0) return `${h}h ${m}m`;
+  if (m > 0) return `${m}m`;
+  return `${Math.floor(sec)}s`;
+}

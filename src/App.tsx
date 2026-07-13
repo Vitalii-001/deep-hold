@@ -5,6 +5,10 @@ import { DepthPanel } from './ui/DepthPanel';
 import { SidePanels } from './ui/SidePanels';
 import { AleStatus } from './ui/AleStatus';
 import { MineView } from './ui/MineView';
+import { AdBoosts } from './ui/AdBoosts';
+import { Toasts } from './ui/Toasts';
+import { OfflineModal } from './ui/OfflineModal';
+import { Watchers } from './ui/Watchers';
 
 export default function App() {
   useGameLoop();
@@ -22,9 +26,13 @@ export default function App() {
         </section>
         <aside className="side-col">
           <AleStatus />
+          <AdBoosts />
           <SidePanels />
         </aside>
       </main>
+      <Watchers />
+      <Toasts />
+      <OfflineModal />
     </div>
   );
 }
