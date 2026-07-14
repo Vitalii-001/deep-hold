@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import {
-  aleStorage, buildingCost, canAfford, isStriking, payCost, scaledCost, statMult, workerCap, workerCost, digSpeed,
+  aleStorage, buildingCost, canAfford, isStriking, payCost, scaledCost, statMult, workerCap, workerCost, digSpeed, totalWorkers, caveInChancePerSec,
 } from './economy';
 import type { GameState } from './types';
 import { BALANCE } from '../config/balance';
@@ -106,4 +106,21 @@ test('isStriking: plenty of ale means no strike', () => {
   const s = baseState({ workers: { miner: 5, smith: 0, brewer: 0, scout: 0 } });
   s.resources.ale = 50;
   expect(isStriking(s)).toBe(false);
+});
+
+test('totalWorkers sums all four worker types', () => {
+  const s = baseState({ workers: { miner: 3, smith: 1, brewer: 2, scout: 1 } });
+  expect(totalWorkers(s)).toBe(7);
+  expect(totalWorkers(baseState())).toBe(0);
+});
+
+test('caveInChancePerSec: zero when careful, config value when reckless, temple reduces it', () => {
+  const s = baseState();
+  expect(caveInChancePerSec(s)).toBe(0);
+  s.digMode = 'reckless';
+  expect(caveInChancePerSec(s)).toBeCloseTo(BALANCE.dig.caveIn.chancePerSec);
+  s.buildings.temple = 2;
+  expect(caveInChancePerSec(s)).toBeCloseTo(
+    BALANCE.dig.caveIn.chancePerSec * Math.pow(1 - BALANCE.dig.caveIn.templeReductionPerLevel, 2),
+  );
 });

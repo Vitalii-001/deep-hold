@@ -1,13 +1,13 @@
-import { useUi, type PanelTab } from './uiStore';
+import { useUi, type ActivePanel } from './uiStore';
 import { WorkersPanel } from './WorkersPanel';
 import { BuildingsPanel } from './BuildingsPanel';
 import { UpgradesPanel } from './UpgradesPanel';
 
-const TABS: PanelTab[] = ['workers', 'buildings', 'upgrades'];
+const TABS: ActivePanel[] = ['workers', 'buildings', 'upgrades'];
 
 export function SidePanels() {
-  const activeTab = useUi((u) => u.activeTab);
-  const setActiveTab = useUi((u) => u.setActiveTab);
+  const activePanel = useUi((u) => u.activePanel);
+  const setActivePanel = useUi((u) => u.setActivePanel);
   return (
     <div className="side-panels">
       <div className="tabs">
@@ -15,16 +15,16 @@ export function SidePanels() {
           <button
             key={t}
             data-hint={`tab-${t}`}
-            className={activeTab === t ? 'active' : ''}
-            onClick={() => setActiveTab(t)}
+            className={activePanel === t ? 'active' : ''}
+            onClick={() => setActivePanel(t)}
           >
             {t[0].toUpperCase() + t.slice(1)}
           </button>
         ))}
       </div>
-      {activeTab === 'workers' && <WorkersPanel />}
-      {activeTab === 'buildings' && <BuildingsPanel />}
-      {activeTab === 'upgrades' && <UpgradesPanel />}
+      {activePanel === 'workers' && <WorkersPanel />}
+      {activePanel === 'buildings' && <BuildingsPanel />}
+      {activePanel === 'upgrades' && <UpgradesPanel />}
     </div>
   );
 }

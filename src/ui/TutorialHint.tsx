@@ -5,7 +5,7 @@ import { evaluateTutorial } from '../game/tutorial';
 
 export function TutorialHint() {
   const s = useGame();
-  const activeTab = useUi((u) => u.activeTab);
+  const activePanel = useUi((u) => u.activePanel);
   const shownIdRef = useRef<string | null>(null);
   const [, forceRerender] = useReducer((n: number) => n + 1, 0);
 
@@ -32,7 +32,7 @@ export function TutorialHint() {
   if (!active) return null;
 
   // If the target lives in a side-panel tab that isn't open, point at that tab.
-  const targetKey = active.tab && active.tab !== activeTab ? `tab-${active.tab}` : active.target;
+  const targetKey = active.tab && active.tab !== activePanel ? `tab-${active.tab}` : active.target;
   const el = document.querySelector<HTMLElement>(`[data-hint="${targetKey}"]`);
   if (!el) return null;
 

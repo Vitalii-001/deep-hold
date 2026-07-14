@@ -3,7 +3,7 @@ import { BALANCE } from '../config/balance';
 import { WORKERS } from '../config/workers';
 import { layerAtDepth } from '../config/layers';
 import { MILESTONES } from '../config/milestones';
-import { aleStorage, digSpeed, statMult } from './economy';
+import { aleStorage, digSpeed, statMult, caveInChancePerSec } from './economy';
 
 export function simulateTick(
   s: GameState,
@@ -45,10 +45,7 @@ export function simulateTick(
   // --- digging + cave-in risk (reckless only)
   let caveInUntil = s.caveInUntil;
   if (s.digMode === 'reckless' && s.caveInUntil <= now) {
-    const chance =
-      BALANCE.dig.caveIn.chancePerSec *
-      dt *
-      Math.pow(1 - BALANCE.dig.caveIn.templeReductionPerLevel, s.buildings.temple);
+    const chance = caveInChancePerSec(s) * dt;
     if (rng() < chance) {
       caveInUntil = now + BALANCE.dig.caveIn.stunSec * 1000;
       res.stone *= 1 - BALANCE.dig.caveIn.stoneLossRatio;

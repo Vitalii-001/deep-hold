@@ -24,6 +24,10 @@ export function payCost(res: Record<ResourceId, number>, cost: Cost): Record<Res
   return out;
 }
 
+export function totalWorkers(s: GameState): number {
+  return s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
+}
+
 export function workerCost(s: GameState, id: WorkerId): Cost {
   const w = WORKERS[id];
   return scaledCost(w.baseCost, w.costGrowth, s.workers[id]);
@@ -70,12 +74,21 @@ export function digSpeed(s: GameState, now: number): number {
   return v;
 }
 
+// Chance of a cave-in per second of reckless digging (0 in careful mode).
+export function caveInChancePerSec(s: GameState): number {
+  if (s.digMode !== 'reckless') return 0;
+  return (
+    BALANCE.dig.caveIn.chancePerSec *
+    Math.pow(1 - BALANCE.dig.caveIn.templeReductionPerLevel, s.buildings.temple)
+  );
+}
+
 // True when at least one dwarf is working and there isn't enough ale to cover
 // one ~0.1s tick of thirst. Pure: 'aleThrift' is not a production stat, so the
 // `now` passed to statMult never changes the result.
 export function isStriking(s: GameState): boolean {
-  const totalWorkers = s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
-  if (totalWorkers === 0) return false;
-  const drink = (totalWorkers * BALANCE.ale.consumptionPerWorker) / statMult(s, 'aleThrift', 0);
+  const workers = totalWorkers(s);
+  if (workers === 0) return false;
+  const drink = (workers * BALANCE.ale.consumptionPerWorker) / statMult(s, 'aleThrift', 0);
   return s.resources.ale < drink * 0.1;
 }
