@@ -32,8 +32,9 @@ export function TutorialHint() {
   if (!active) return null;
 
   // If the target lives in a side-panel tab that isn't open, point at that tab.
-  const targetKey = active.tab && active.tab !== activePanel ? `tab-${active.tab}` : active.target;
-  const el = document.querySelector<HTMLElement>(`[data-hint="${targetKey}"]`);
+  const targetKey = active.tab && active.tab !== activePanel ? `nav-${active.tab}` : active.target;
+  const els = Array.from(document.querySelectorAll<HTMLElement>(`[data-hint="${targetKey}"]`));
+  const el = els.find((e) => e.getBoundingClientRect().width > 0) ?? null;
   if (!el) return null;
 
   const rect = el.getBoundingClientRect();
