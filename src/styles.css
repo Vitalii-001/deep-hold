@@ -62,11 +62,32 @@ button.active { border-color: var(--accent); background: #33290f; }
   user-select: none;
 }
 .mine-btn:active { transform: scale(0.96); }
+.mine-btn.punch { animation: punch 220ms ease-out; }
+@keyframes punch {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.88); }
+  65% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 .float-num {
   position: absolute; bottom: 90%; color: var(--accent); font-weight: 700;
   pointer-events: none; animation: floatUp 0.8s ease-out forwards;
 }
 @keyframes floatUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-40px); } }
+
+.chip {
+  position: absolute; left: 50%; top: 38%; pointer-events: none;
+  animation: chipFly 0.5s ease-out forwards;
+}
+.chip-sq { width: 5px; height: 5px; background: var(--dim); }
+.chip-tri {
+  width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent;
+  border-bottom: 6px solid var(--dim);
+}
+@keyframes chipFly {
+  from { transform: translate(-50%, -50%) rotate(0deg); opacity: 1; }
+  to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)); opacity: 0; }
+}
 
 .dig-mode { display: flex; gap: 8px; margin-top: 8px; }
 
