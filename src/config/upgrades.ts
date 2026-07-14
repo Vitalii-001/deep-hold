@@ -35,9 +35,9 @@ export const UPGRADE_LIST: UpgradeConfig[] = [
   { id: 'wateredAle', name: 'Watered-Down Ale', description: "Don't tell anyone. Ale lasts x1.25 longer.", cost: { stone: 300 }, stat: 'aleThrift', mult: 1.25, unlockDepth: 100 },
   { id: 'regulationTankards', name: 'Regulation Tankards', description: 'Standard issue. Ale lasts x1.5 longer.', cost: { gold: 30 }, stat: 'aleThrift', mult: 1.5, unlockDepth: 250 },
   // dig (3)
-  { id: 'deepMaps', name: 'Maps of the Deep', description: 'Scouts chart faster routes. Digging x1.5.', cost: { gold: 20 }, stat: 'dig', mult: 1.5, unlockDepth: 200, requiresBuilding: 'greatHall' },
-  { id: 'blastingPowder', name: 'Blasting Powder', description: 'What could go wrong? Digging x2.', cost: { ingot: 30 }, stat: 'dig', mult: 2, unlockDepth: 300 },
-  { id: 'earthwardCharms', name: 'Earthward Charms', description: 'The stone parts willingly. Digging x1.5.', cost: { gem: 20 }, stat: 'dig', mult: 1.5, unlockDepth: 450, requiresBuilding: 'temple' },
+  { id: 'deepMaps', name: 'Maps of the Deep', description: 'Scouts chart faster routes. Digging x1.15.', cost: { gold: 20 }, stat: 'dig', mult: 1.15, unlockDepth: 200, requiresBuilding: 'greatHall' },
+  { id: 'blastingPowder', name: 'Blasting Powder', description: 'What could go wrong? Digging x1.2.', cost: { ingot: 30 }, stat: 'dig', mult: 1.2, unlockDepth: 300 },
+  { id: 'earthwardCharms', name: 'Earthward Charms', description: 'The stone parts willingly. Digging x1.15.', cost: { gem: 20 }, stat: 'dig', mult: 1.15, unlockDepth: 450, requiresBuilding: 'temple' },
   // offline (2)
   { id: 'nightShift', name: 'Night Shift', description: 'The hold never sleeps. Offline progress x1.5.', cost: { ingot: 15 }, stat: 'offline', mult: 1.5, unlockDepth: 120, requiresBuilding: 'greatHall' },
   { id: 'ancestralOverseers', name: 'Ancestral Overseers', description: 'The dead keep excellent books. Offline x2.', cost: { gem: 25 }, stat: 'offline', mult: 2, unlockDepth: 450, requiresBuilding: 'temple' },

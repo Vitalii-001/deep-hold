@@ -4,6 +4,8 @@ import {
 } from './economy';
 import type { GameState } from './types';
 import { BALANCE } from '../config/balance';
+import { WORKERS } from '../config/workers';
+import { BUILDINGS } from '../config/buildings';
 
 function baseState(over: Partial<GameState> = {}): GameState {
   return {
@@ -37,14 +39,16 @@ test('canAfford and payCost', () => {
 
 test('worker cost scales with owned count', () => {
   const s = baseState({ workers: { miner: 2, smith: 0, brewer: 0, scout: 0 } });
-  expect(workerCost(s, 'miner').stone).toBe(Math.ceil(15 * 1.15 * 1.15));
+  const w = WORKERS.miner;
+  expect(workerCost(s, 'miner').stone).toBe(Math.ceil(w.baseCost.stone! * w.costGrowth ** 2));
 });
 
 test('building cost scales with level', () => {
   const s = baseState();
-  expect(buildingCost(s, 'mineShaft').stone).toBe(50);
+  const b = BUILDINGS.mineShaft;
+  expect(buildingCost(s, 'mineShaft').stone).toBe(b.baseCost.stone!);
   s.buildings.mineShaft = 2;
-  expect(buildingCost(s, 'mineShaft').stone).toBe(Math.ceil(50 * Math.pow(1.6, 2)));
+  expect(buildingCost(s, 'mineShaft').stone).toBe(Math.ceil(b.baseCost.stone! * b.costGrowth ** 2));
 });
 
 test('worker caps come from buildings', () => {

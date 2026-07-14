@@ -15,7 +15,7 @@ export const WORKERS: Record<WorkerId, WorkerConfig> = {
     name: 'Miner',
     description: 'Digs stone and whatever the layer holds.',
     baseCost: { stone: 15 },
-    costGrowth: 1.15,
+    costGrowth: 1.18,
     baseRate: 0.5,
   },
   smith: {

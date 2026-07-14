@@ -54,9 +54,11 @@ test('layer yields: at iron depth miners also produce ore', () => {
 
 test('digging advances depth and reaches milestones', () => {
   const s = state({ workers: { miner: 5, smith: 0, brewer: 0, scout: 0 } });
-  // speed = 0.05 + 5*0.02 = 0.15 m/s, merry x1.5 = 0.225; 50s -> 11.25 m
-  const next = simulateTick(s, 50, NOW, never);
-  expect(next.depth).toBeCloseTo(11.25);
+  // careful mode, no upgrades: descent = (baseSpeed + 5*perMiner), merry x1.5
+  const speed = BALANCE.dig.baseSpeed + 5 * BALANCE.dig.perMiner;
+  const expected = speed * BALANCE.ale.happyMult * 100; // over 100s
+  const next = simulateTick(s, 100, NOW, never);
+  expect(next.depth).toBeCloseTo(expected);
   expect(next.milestonesReached).toContain('m10');
 });
 

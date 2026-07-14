@@ -16,7 +16,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
     name: 'Mine Shaft',
     description: '+3 miner slots per level.',
     baseCost: { stone: 50 },
-    costGrowth: 1.6,
+    costGrowth: 1.72,
     maxLevel: 20,
     unlockDepth: 0,
   },

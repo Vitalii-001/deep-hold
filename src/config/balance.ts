@@ -3,9 +3,9 @@
 export const BALANCE = {
   click: { stonePerClick: 1 },
   dig: {
-    baseSpeed: 0.05, // m/s with no workers
-    perMiner: 0.02, // m/s each
-    perScout: 0.15, // m/s each
+    baseSpeed: 0.11, // m/s with no workers — sets the near-constant descent pace
+    perMiner: 0.00008, // m/s each — miners mainly dig stone, barely speed the descent
+    perScout: 0.0025, // m/s each — scouts accelerate the descent modestly
     recklessMult: 2,
     caveIn: {
       chancePerSec: 0.02, // in reckless mode
