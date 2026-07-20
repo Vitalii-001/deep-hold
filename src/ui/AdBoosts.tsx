@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGame } from '../game/store';
-import { showRewardedAd } from '../sdk/ads';
+import { BALANCE } from '../config/balance';
+import { runRewardedAd } from './adGate';
 import { formatDuration } from '../game/format';
 import { sfx } from './sfx';
 
@@ -11,17 +12,20 @@ export function AdBoosts() {
   const blessed = s.blessingUntil > now;
   const hasTemple = s.buildings.temple >= 1;
   const hasBrewery = s.buildings.brewery >= 1;
+  const feastCooling = s.playedSec < s.feastCooldownUntilSec && s.playedSec >= s.feastUntilSec;
   if (!hasTemple && !hasBrewery) return null;
 
-  const watch = async (kind: 'blessing' | 'ale') => {
+  const watch = async (kind: 'blessing' | 'ale' | 'feastCooldown') => {
     setBusy(true);
     try {
-      const result = await showRewardedAd();
+      const result = await runRewardedAd();
       if (result === 'rewarded') {
         if (kind === 'blessing') s.claimBlessing(Date.now());
-        else {
+        else if (kind === 'ale') {
           s.claimAleBarrel();
           sfx.burp();
+        } else {
+          s.rushFeastCooldown(BALANCE.feast.cooldownSec);
         }
       }
     } finally {
@@ -30,7 +34,7 @@ export function AdBoosts() {
   };
 
   return (
-    <div className="panel ad-boosts">
+    <div className="ad-boosts">
       {hasTemple && (
         <button disabled={busy || blessed} onClick={() => watch('blessing')}>
           {blessed
@@ -41,6 +45,11 @@ export function AdBoosts() {
       {hasBrewery && (
         <button disabled={busy} onClick={() => watch('ale')}>
           📺 Free barrel of ale
+        </button>
+      )}
+      {hasBrewery && feastCooling && (
+        <button disabled={busy} onClick={() => watch('feastCooldown')}>
+          📺 Finish Feast cooldown
         </button>
       )}
     </div>

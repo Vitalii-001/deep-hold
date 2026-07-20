@@ -4,6 +4,7 @@ import App from './App';
 import { bootGame } from './game/boot';
 import { clearSave } from './game/save';
 import { useUi } from './ui/uiStore';
+import { gameplayStart, initPortal } from './sdk/portal';
 import './styles.css';
 
 // ?reset wipes the save before boot. Runs after any beforeunload re-save of
@@ -14,13 +15,24 @@ if (new URLSearchParams(window.location.search).has('reset')) {
   window.history.replaceState(null, '', window.location.pathname);
 }
 
-const summary = bootGame();
-if (summary && (summary.metersDug >= 0.5 || Object.values(summary.gained).some((v) => v >= 1))) {
-  useUi.getState().setOfflineSummary(summary);
-}
+const root = document.getElementById('root')!;
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+if (!initPortal()) {
+  // Sitelock rejected the host — static note, no game.
+  root.innerHTML =
+    '<p style="font-family:system-ui;padding:40px;text-align:center">Play <strong>Deep Hold</strong> on CrazyGames.</p>';
+} else {
+  const summary = bootGame();
+  if (summary && (summary.metersDug >= 0.5 || Object.values(summary.gained).some((v) => v >= 1))) {
+    useUi.getState().setOfflineSummary(summary);
+  }
+  // Portal metric: initial download is measured up to the first gameplayStart.
+  // The game is interactive immediately after boot (≤1 click to gameplay).
+  gameplayStart();
+
+  createRoot(root).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}

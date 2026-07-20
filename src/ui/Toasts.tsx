@@ -4,7 +4,7 @@ import { useUi } from './uiStore';
 function ToastItem({ id, text }: { id: number; text: string }) {
   const removeToast = useUi((u) => u.removeToast);
   useEffect(() => {
-    const h = setTimeout(() => removeToast(id), 5000);
+    const h = setTimeout(() => removeToast(id), 3200);
     return () => clearTimeout(h);
   }, [id, removeToast]);
   return <div className="toast">{text}</div>;

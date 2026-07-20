@@ -12,8 +12,15 @@ export function OfflineModal() {
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <h2>Welcome back, my King!</h2>
         <p className="desc">
-          While you were away ({formatDuration(summary.elapsedSec)}), the dwarves kept working:
+          While you were away ({formatDuration(summary.elapsedSec)}), the dwarves kept the hold moving:
         </p>
+        {summary.events.length > 0 && (
+          <ul>
+            {summary.events.map((event) => (
+              <li key={event}>{event}</li>
+            ))}
+          </ul>
+        )}
         <ul>
           {entries.map(([k, v]) => (
             <li key={k}>

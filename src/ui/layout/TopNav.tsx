@@ -1,11 +1,11 @@
 import { useUi } from '../uiStore';
 import { NAV_ITEMS } from './navItems';
 
-export function LeftNav() {
+export function TopNav() {
   const activePanel = useUi((u) => u.activePanel);
   const setActivePanel = useUi((u) => u.setActivePanel);
   return (
-    <nav className="left-nav">
+    <nav className="top-nav">
       {NAV_ITEMS.map((n) => (
         <button
           key={n.id}

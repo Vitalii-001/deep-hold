@@ -2,12 +2,56 @@ import { useGame } from '../../game/store';
 import { useUi } from '../uiStore';
 import { ResourceBar } from '../ResourceBar';
 import { MuteButton } from '../MuteButton';
+import { TopNav } from './TopNav';
 import { LAYERS, layerAtDepth } from '../../config/layers';
+import { BALANCE } from '../../config/balance';
+import { formatDuration } from '../../game/format';
+import { sfx } from '../sfx';
+
+// Feast (Phase 1.4, §6.3): ale sink in the old Hall-button slot. Hidden until
+// the first brewery; shows cost when ready, remaining time while active or
+// cooling down. Placeholder styling — design pass comes later.
+function FeastButton() {
+  const brewery = useGame((s) => s.buildings.brewery);
+  const ale = useGame((s) => s.resources.ale);
+  const playedSec = useGame((s) => s.playedSec);
+  const feastUntilSec = useGame((s) => s.feastUntilSec);
+  const feastCooldownUntilSec = useGame((s) => s.feastCooldownUntilSec);
+  const holdFeast = useGame((s) => s.holdFeast);
+  const pushToast = useUi((u) => u.pushToast);
+
+  if (brewery < 1) return null;
+
+  const active = playedSec < feastUntilSec;
+  const cooling = !active && playedSec < feastCooldownUntilSec;
+  const affordable = ale >= BALANCE.feast.aleCost;
+  const label = active
+    ? `🍻 Feasting ${formatDuration(feastUntilSec - playedSec)}`
+    : cooling
+      ? `🍻 ${formatDuration(feastCooldownUntilSec - playedSec)}`
+      : `🍻 Feast (${BALANCE.feast.aleCost}🍺)`;
+
+  return (
+    <button
+      className={`feast-btn ${active ? 'active' : ''}`}
+      disabled={active || cooling || !affordable}
+      title={`Hold a feast: ${BALANCE.feast.aleCost} ale for +${Math.round((BALANCE.feast.productionMult - 1) * 100)}% production (${Math.round(BALANCE.feast.durationSec / 60)} min)`}
+      onClick={() => {
+        holdFeast();
+        pushToast('🍻 The Hold feasts! Production surges.');
+        sfx.burp();
+      }}
+    >
+      {label}
+    </button>
+  );
+}
 
 export function TopBar() {
   const depth = useGame((s) => s.depth);
   const setActivePanel = useUi((u) => u.setActivePanel);
   const setCreditsOpen = useUi((u) => u.setCreditsOpen);
+  const setSettingsOpen = useUi((u) => u.setSettingsOpen);
   const layer = layerAtDepth(depth);
   const next = LAYERS.find((l) => l.depth > depth);
   const progress = next
@@ -34,15 +78,24 @@ export function TopBar() {
           </div>
         </div>
       </div>
-      <ResourceBar />
-      <div className="topbar-actions">
-        <button className="shop-btn" onClick={() => setActivePanel('adBoosts')}>
-          🛒 Shop
-        </button>
-        <button className="credits-link" onClick={() => setCreditsOpen(true)}>
-          Credits
-        </button>
-        <MuteButton />
+      <div className="topbar-main">
+        <div className="topbar-row">
+          <ResourceBar />
+          <div className="topbar-actions">
+            <FeastButton />
+            <button className="shop-btn" onClick={() => setActivePanel('adBoosts')}>
+              🛒 Shop
+            </button>
+            <button className="credits-link" onClick={() => setCreditsOpen(true)}>
+              Credits
+            </button>
+            <button className="settings-btn" onClick={() => setSettingsOpen(true)} title="Settings">
+              ⚙
+            </button>
+            <MuteButton />
+          </div>
+        </div>
+        <TopNav />
       </div>
     </header>
   );

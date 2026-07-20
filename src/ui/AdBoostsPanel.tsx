@@ -11,7 +11,7 @@ export function AdBoostsPanel() {
         <div className="row locked">
           <div className="row-main">
             <strong>Free Barrel of Ale</strong>
-            <p className="desc">Build a Brewery to unlock.</p>
+            <p className="desc">Build a Brewery to unlock Free Barrel of Ale.</p>
           </div>
         </div>
       )}
@@ -19,7 +19,7 @@ export function AdBoostsPanel() {
         <div className="row locked">
           <div className="row-main">
             <strong>Ancestors' Blessing</strong>
-            <p className="desc">Build a Temple of the Ancestors to unlock.</p>
+            <p className="desc">Build a Temple to unlock Ancestors' Blessing.</p>
           </div>
         </div>
       )}
