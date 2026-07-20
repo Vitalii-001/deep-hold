@@ -1,16 +1,22 @@
 import { useGame } from '../game/store';
+import { useUiSettings } from './uiSettings';
+import { useUi } from './uiStore';
 
 let ctx: AudioContext | null = null;
 
 function blip(freq: number, dur: number, type: OscillatorType, vol = 0.15) {
   if (useGame.getState().muted) return;
+  if (useUi.getState().adPlaying) return; // CrazyGames: game audio muted during ads
+  const settings = useUiSettings.getState();
+  const gain = vol * settings.masterVolume * settings.sfxVolume;
+  if (gain <= 0) return;
   try {
     if (!ctx) ctx = new AudioContext();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.type = type;
     o.frequency.value = freq;
-    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.setValueAtTime(gain, ctx.currentTime);
     g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
     o.connect(g).connect(ctx.destination);
     o.start();

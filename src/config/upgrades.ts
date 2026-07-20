@@ -19,10 +19,10 @@ export const UPGRADE_LIST: UpgradeConfig[] = [
   { id: 'deepLanterns', name: 'Deep Lanterns', description: 'See what you strike. Mining x1.5.', cost: { stone: 2000, gold: 20 }, stat: 'mining', mult: 1.5, unlockDepth: 200 },
   { id: 'gemDrills', name: 'Gem-Tipped Drills', description: 'Cuts rock like cheese. Mining x2.', cost: { gem: 15 }, stat: 'mining', mult: 2, unlockDepth: 450 },
   { id: 'runePicks', name: 'Runed Picks', description: 'The ancestors guide each swing. Mining x2.', cost: { gold: 500, gem: 40 }, stat: 'mining', mult: 2, unlockDepth: 1000 },
-  // click (3)
-  { id: 'heavyHammer', name: 'Heavy Hammer', description: 'Your clicks hit x2 harder.', cost: { stone: 50 }, stat: 'click', mult: 2, unlockDepth: 0 },
-  { id: 'kingsGloves', name: "King's Gloves", description: 'No blisters, no mercy. Clicks x2.', cost: { stone: 1000 }, stat: 'click', mult: 2, unlockDepth: 75 },
-  { id: 'royalPick', name: 'Royal Pick', description: 'Gold-inlaid, absurdly effective. Clicks x3.', cost: { gold: 100 }, stat: 'click', mult: 3, unlockDepth: 200 },
+  // mining/dig (3) — early tool upgrades
+  { id: 'heavyHammer', name: 'Heavy Hammers', description: 'Sturdier tools. Mining x1.4.', cost: { stone: 60 }, stat: 'mining', mult: 1.4, unlockDepth: 0 },
+  { id: 'kingsGloves', name: "King's Gloves", description: 'No blisters, no mercy. The crew digs x1.2 faster.', cost: { stone: 1000 }, stat: 'dig', mult: 1.2, unlockDepth: 75 },
+  { id: 'royalPick', name: 'Royal Pick', description: 'Gold-inlaid, absurdly effective. Digging x1.25.', cost: { gold: 100 }, stat: 'dig', mult: 1.25, unlockDepth: 200 },
   // smelt (3)
   { id: 'bellows', name: 'Great Bellows', description: 'Hotter furnace. Smelting x1.5.', cost: { stone: 300 }, stat: 'smelt', mult: 1.5, unlockDepth: 75, requiresBuilding: 'smelter' },
   { id: 'cokeFurnace', name: 'Coke Furnace', description: 'Burns cleaner and meaner. Smelting x2.', cost: { ingot: 20 }, stat: 'smelt', mult: 2, unlockDepth: 200, requiresBuilding: 'smelter' },

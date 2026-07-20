@@ -14,7 +14,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   mineShaft: {
     id: 'mineShaft',
     name: 'Mine Shaft',
-    description: '+3 miner slots per level.',
+    description: '+3 miner slots.',
     baseCost: { stone: 50 },
     costGrowth: 1.72,
     maxLevel: 20,
@@ -23,7 +23,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   brewery: {
     id: 'brewery',
     name: 'Brewery',
-    description: '+2 brewer slots and +50 ale storage per level.',
+    description: '+2 brewer slots and +50 ale storage.',
     baseCost: { stone: 150 },
     costGrowth: 1.7,
     maxLevel: 15,
@@ -32,7 +32,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   smelter: {
     id: 'smelter',
     name: 'Smelter',
-    description: '+2 smith slots per level.',
+    description: '+2 smith slots.',
     baseCost: { stone: 400 },
     costGrowth: 1.7,
     maxLevel: 15,
@@ -41,7 +41,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   forge: {
     id: 'forge',
     name: 'Forge',
-    description: 'Better tools: x1.25 mining speed per level.',
+    description: 'Better tools: x1.25 mining speed.',
     baseCost: { ingot: 10 },
     costGrowth: 1.8,
     maxLevel: 10,
@@ -50,7 +50,7 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   greatHall: {
     id: 'greatHall',
     name: 'Great Hall',
-    description: '+1 scout slot and +5% all production per level.',
+    description: '+1 scout slot and +5% all production.',
     baseCost: { stone: 2000, ingot: 25 },
     costGrowth: 1.9,
     maxLevel: 10,
@@ -59,10 +59,19 @@ export const BUILDINGS: Record<BuildingId, BuildingConfig> = {
   temple: {
     id: 'temple',
     name: 'Temple of the Ancestors',
-    description: '-20% cave-in chance and +5% all production per level. Unlocks blessings.',
+    description: '-20% cave-in chance and +5% all production. Unlocks blessings.',
     baseCost: { gold: 150 },
     costGrowth: 2.0,
     maxLevel: 10,
     unlockDepth: 200,
+  },
+  tradingPost: {
+    id: 'tradingPost',
+    name: 'Trading Post',
+    description: 'Opens the Market: sell surplus resources for Crowns.',
+    baseCost: { stone: 800, ingot: 15 },
+    costGrowth: 2, // irrelevant — maxLevel 1, so it is only ever built at base cost
+    maxLevel: 1,
+    unlockDepth: 75,
   },
 };

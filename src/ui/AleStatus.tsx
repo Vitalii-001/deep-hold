@@ -1,36 +1,43 @@
 import { useGame } from '../game/store';
-import { WORKERS } from '../config/workers';
-import { BALANCE } from '../config/balance';
-import { aleStorage, isStriking, statMult } from '../game/economy';
-import { formatNumber } from '../game/format';
+import { getAleForecast } from '../game/forecast';
+import { formatDuration, formatNumber } from '../game/format';
 import { Icon } from './Icon';
+
+const MORALE_TEXT = {
+  idle: 'Hire some dwarves to get digging.',
+  merry: '😊 The dwarves work merrily',
+  thirsty: '😅 Thirsty — work is slowing down',
+  dry: '🪧 DRY — no ale, work crawls!',
+} as const;
 
 export function AleStatus() {
   const s = useGame();
-  const now = Date.now();
-  const storage = aleStorage(s);
-  const totalWorkers = s.workers.miner + s.workers.smith + s.workers.brewer + s.workers.scout;
-  const drink = (totalWorkers * BALANCE.ale.consumptionPerWorker) / statMult(s, 'aleThrift', now);
-  const morale = s.resources.ale >= drink * 0.1 ? BALANCE.ale.happyMult : BALANCE.ale.strikeMult;
-  const stun = s.caveInUntil > now ? BALANCE.dig.caveIn.stunMult : 1;
-  const brew = s.workers.brewer * WORKERS.brewer.baseRate * statMult(s, 'brew', now) * morale * stun;
-  const striking = isStriking(s);
+  const f = getAleForecast(s, Date.now());
+  const ratio = f.storage > 0 ? s.resources.ale / f.storage : 0;
+  const netLabel = `${f.netAle >= 0 ? '+' : ''}${f.netAle.toFixed(2)}/s`;
+
   return (
-    <div className={`panel ale-status ${striking ? 'strike' : ''}`} data-hint="ale-status">
+    <div className={`panel ale-status ale-${f.moraleState}`} data-hint="ale-status">
       <div className="bar">
-        <div className="bar-fill" style={{ width: `${Math.min(100, (s.resources.ale / storage) * 100)}%` }} />
+        <div className="bar-fill" style={{ width: `${Math.min(100, ratio * 100)}%` }} />
       </div>
       <p>
-        <Icon id="ale" /> {formatNumber(s.resources.ale)}/{formatNumber(storage)}
-        <span className="desc"> (+{brew.toFixed(1)}/s, −{drink.toFixed(1)}/s)</span>
+        <Icon id="ale" /> {formatNumber(s.resources.ale)}/{formatNumber(f.storage)}
+        <span className="desc"> · Net Ale: {netLabel}</span>
       </p>
-      <p className="morale">
-        {striking
-          ? '🪧 ON STRIKE — no ale, work crawls!'
-          : totalWorkers > 0
-            ? '😊 The dwarves work merrily'
-            : 'Hire some dwarves to get digging.'}
+      <p className="desc ale-forecast-line">
+        {f.timeToDry !== null && <>Dry in {formatDuration(f.timeToDry)}</>}
+        {f.timeToFull !== null && <>Storage full in {formatDuration(f.timeToFull)}</>}
+        {f.timeToDry === null && f.timeToFull === null && f.workers > 0 && <>Supply is stable</>}
       </p>
+      {f.recommendedBrewers > 0 && Number.isFinite(f.recommendedBrewers) && s.buildings.brewery > 0 && (
+        <p className="desc ale-recommend">
+          {f.recommendedBrewers === 1
+            ? '1 more Brewer stabilizes this shift'
+            : `${f.recommendedBrewers} more Brewers stabilize this shift`}
+        </p>
+      )}
+      <p className="morale">{MORALE_TEXT[f.moraleState]}</p>
     </div>
   );
 }

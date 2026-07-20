@@ -18,7 +18,7 @@ beforeEach(() => {
 
 test('no save: fresh game, no summary', () => {
   expect(bootGame(1000)).toBeNull();
-  expect(useGame.getState().resources.stone).toBe(0);
+  expect(useGame.getState().resources.stone).toBe(15); // fresh-game starting stone
 });
 
 test('recent save (< 60s away): hydrates without offline sim', () => {
@@ -38,8 +38,10 @@ test('resetGame wipes the save and restores a fresh in-memory state', () => {
   useGame.getState().hydrate(s);
   resetGame();
   expect(loadGame()).toBeNull();
-  expect(useGame.getState().resources.stone).toBe(0);
+  expect(useGame.getState().resources.stone).toBe(15); // fresh state, starting stone
   expect(useGame.getState().depth).toBe(0);
+  // a fresh run gets the intro again
+  expect(useGame.getState().onboarding.introSeen).toBe(false);
 });
 
 test('long absence: offline sim runs and summary is returned', () => {

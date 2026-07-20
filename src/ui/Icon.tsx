@@ -13,7 +13,8 @@ for (const [path, svg] of Object.entries(svgModules)) {
 export const EMOJI: Record<string, string> = {
   stone: '🪨', ore: '🟤', ingot: '🔩', gold: '🪙', gem: '💎', ale: '🍺',
   miner: '⛏️', smith: '🔨', brewer: '🍻', scout: '🧭',
-  mineShaft: '🕳️', smelter: '🔥', forge: '⚒️', brewery: '🛢️', greatHall: '🏛️', temple: '🗿',
+  mineShaft: '🕳️', smelter: '🔥', forge: '⚒️', brewery: '🛢️', greatHall: '🏛️', temple: '🗿', tradingPost: '🏪',
+  crown: '👑', market: '⚖️',
 };
 
 export function Icon({ id }: { id: string }) {

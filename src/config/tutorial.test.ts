@@ -10,20 +10,20 @@ const step = (id: string) => TUTORIAL_STEPS.find((s) => s.id === id)!;
 
 test('there are six steps with unique ids in order', () => {
   const ids = TUTORIAL_STEPS.map((s) => s.id);
-  expect(ids).toEqual(['clickMine', 'hireMiner', 'buildShaft', 'buildBrewery', 'hireBrewer', 'strikeExplain']);
+  expect(ids).toEqual(['visitKingsHall', 'hireMiner', 'buildShaft', 'buildBrewery', 'hireBrewer', 'strikeExplain']);
 });
 
-test('clickMine shows on a fresh game and completes at 15 stone', () => {
-  const s = base();
-  expect(step('clickMine').showWhen(s)).toBe(true);
-  expect(step('clickMine').doneWhen(s)).toBe(false);
-  s.resources.stone = 15;
-  expect(step('clickMine').showWhen(s)).toBe(false);
-  expect(step('clickMine').doneWhen(s)).toBe(true);
+test('visitKingsHall opens the game and completes once the intro is seen', () => {
+  const s = base(); // fresh game: intro not seen yet
+  expect(step('visitKingsHall').showWhen(s)).toBe(true);
+  expect(step('visitKingsHall').doneWhen(s)).toBe(false);
+  s.onboarding = { introSeen: true };
+  expect(step('visitKingsHall').doneWhen(s)).toBe(true);
+  expect(step('visitKingsHall').showWhen(s)).toBe(false);
 });
 
-test('hireMiner shows once affordable, completes on first miner', () => {
-  const s = base({ resources: { ...base().resources, stone: 15 } });
+test('hireMiner shows on a fresh game (starting stone affords the first miner)', () => {
+  const s = base(); // fresh game starts with 15 stone
   expect(step('hireMiner').showWhen(s)).toBe(true);
   s.workers.miner = 1;
   expect(step('hireMiner').showWhen(s)).toBe(false);
@@ -52,6 +52,13 @@ test('hireBrewer shows once a brewery exists', () => {
   s.workers.brewer = 1;
   expect(step('hireBrewer').doneWhen(s)).toBe(true);
   expect(step('hireBrewer').showWhen(s)).toBe(false);
+});
+
+test('hireBrewer explains missing stone before it is affordable', () => {
+  const s = base({ buildings: { ...base().buildings, brewery: 1 } });
+  expect(step('hireBrewer').detail?.(s)).toContain('more stone');
+  s.resources.stone = 80;
+  expect(step('hireBrewer').detail?.(s)).toBeNull();
 });
 
 test('strikeExplain shows during a strike and is marked requiresShown', () => {
